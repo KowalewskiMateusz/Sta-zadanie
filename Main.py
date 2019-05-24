@@ -12,23 +12,51 @@ class Program:
         self.data_frame = self.data_frame.to_dict()
         self.data_frame_length = len(self.data_frame['Terytorium'])
 
+    def which_province(self):
+        while 1:
+            array = []
+            j = 0
+            print("Dla którego województwa chciałbyś zobaczyć wyniki?")
+            province = input("")
+            province = province.capitalize()
+            for i in range(0, 17):
+                array.append(self.data_frame['Terytorium'][j])
+                if province == self.data_frame['Terytorium'][j]:
+                    return province
+                j = j + 37
+
+            print("Proszę podać poprawną nazwe województwa")
+            print("Oto lista wszystkich dostępnych możliwości łącznie z całą Polska: ")
+            for i in range(len(array)):
+                print(str(i + 1) + "." + array[i])
+
     @staticmethod
     def men_women(who="Wszyscy"):
-        sex_differentiation = input("Czy chciałbyś zobaczyć rozróżnienie na płcie?(Tak/Nie) ")
-        if sex_differentiation == "Tak":
-            print("Mężczyźni czy Kobiety?(Mężczyźni/Kobiety)")
-            who = input("")
-            return who
-        else:
-            return who
+        while 1:
+            print("Czy chciałbyś zobaczyć rozróżnienie na płcie?(Tak/Nie)")
+            sex_differentiation = input("")
+            sex_differentiation = sex_differentiation.capitalize()
+            if sex_differentiation == "Tak":
+                while 1:
+                    print("Mężczyźni czy Kobiety?(Mężczyźni/Kobiety)")
+                    who = input("")
+                    who = who.capitalize()
+                    if who == "Mężczyźni" or who == "Kobiety":
+                        return who
+                    else:
+                        print("Wpisz prawdiłową odpowiedź")
+            elif sex_differentiation == 'Nie':
+                return who
+            else:
+                print("Wpisz prawdiłową odpowiedź")
 
     def average_for_province_in_years(self, who):
-        year = input("Podaj do kiedy: ")
-        province = input("Podaj województwo: ")
+        year = input("Podaj do kiedy(posiadam dane od 2010 do 2018 roku): ")
+        province = self.which_province()
         loop_counter, if_counter, sums = 0, 0, 0
         while loop_counter < self.data_frame_length:
             if self.data_frame['Terytorium'][loop_counter] == province and self.data_frame['Przystąpiło/zdało '][
-               loop_counter] == 'przystąpiło' and self.data_frame['Rok'][loop_counter] <= int(year):
+                loop_counter] == 'przystąpiło' and self.data_frame['Rok'][loop_counter] <= int(year):
                 if who == "Mężczyźni" and loop_counter % 2 == 0:
                     sums = sums + self.data_frame['Liczba osób'][loop_counter]
                     if_counter = if_counter + 1
@@ -39,7 +67,13 @@ class Program:
                     sums = sums + self.data_frame['Liczba osób'][loop_counter]
                     if_counter = if_counter + 1
             loop_counter = loop_counter + 1
-        print(year, " - ", sums / if_counter)
+        if int(year) > 2018:
+            print(
+                "Wpisałeś data dla, której jeszcze nie mam wyników, wyświetlam Ci więc dane ze wszystkich zebranych dat: ")
+        try:
+            print(year, " - ", round(sums / if_counter, 2))
+        except ZeroDivisionError:
+            print("Nie mam danych z tamtych lat!")
 
     def percent_of_passed_exams(self, province, who):
         participate, passed, percent = [], [], []
@@ -119,8 +153,8 @@ class Program:
 
     def comparision(self, who):
         year = 2010
-        woj_1 = input("Podaj 1 województwo: ")
-        woj_2 = input("Podaj 2 województwo: ")
+        woj_1 = self.which_province()
+        woj_2 = self.which_province()
         woj_1_dict = self.percent_of_passed_exams(woj_1, who)
         woj_2_dict = self.percent_of_passed_exams(woj_2, who)
         while year <= 2018:
@@ -153,7 +187,7 @@ class Interface:
             self.draw_interface()
         elif self.option == "2":
             who = program.men_women()
-            province = input("Które województwo Cię interesuje?")
+            province = self.which_province()
             dictionary = program.percent_of_passed_exams(province, who)
             for key, values in dictionary.items():
                 print(str(key) + " - " + str(values) + "%")
@@ -161,8 +195,8 @@ class Interface:
         elif self.option == "3":
             year = input("Jaki rok Cię interesuje?")
             who = program.men_women()
-            province, procent = program.best_state(year, who)
-            print(str(province) + " - " + str(procent) + "%")
+            province, percent = program.best_state(year, who)
+            print(str(province) + " - " + str(percent) + "%")
             self.draw_interface()
         elif self.option == "4":
             who = program.men_women()
@@ -180,9 +214,10 @@ def main():
     url = "https://www.dane.gov.pl/media/resources/20190520/Liczba_os%C3%B3b_kt%C3%B3re_" \
           "przystapi%C5%82y_lub_zda%C5%82y_egzamin_maturalny.csv"
     program = Program(url)
+    """
     interface = Interface()
     interface.draw_interface()
-    interface.main_loop(program)
+    interface.main_loop(program)"""
 
 
 if __name__ == '__main__':
