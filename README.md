@@ -1,7 +1,7 @@
 # Staż-zadanie
 This is a project made for intern in Profile Software company. I had to download and extract csv file and then make few things with extracted data. I used Python 3.7.2 (it won't work with Python 2). The requirement was to not use any external library(u can use it only for bonus tasks). 
 If i were to use external libraries i would use Pandas to be precis I would use data_frame structur to handle data.
-I had to write unit tests to this program as well. Today I learned that writing first tests and later code(TDD) is way better than first writing code and then tests. If i were to write full test module i would have to rewrite all my main program because I had no idea how to make tests to program i have now. Normally I would just do that but I right now I lack time to do this.
+I had to write unit tests to this program as well. Today I learned that writing first tests and later code(TDD) is way better than first writing code and then tests. So I will definitly do this in my next project. If i were to write full test module i would have to rewrite all my main program because I had no idea how to make tests to program i have now. Normally I would just do that but I right now I lack time to do this.
 
 If u want to run a program u will need few things:
 1.Python 3.7.2 u can download it from here https://www.python.org/downloads/. The instruction how to do this is on site too.
