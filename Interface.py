@@ -68,3 +68,5 @@ class Interface:
                 self.draw_interface()
             elif self.option == "6":  # Exit the program
                 sys.exit(0)
+            else:
+                print("Prosze podać poprawno komende")
