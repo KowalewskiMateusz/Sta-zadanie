@@ -69,4 +69,4 @@ class Interface:
             elif self.option == "6":  # Exit the program
                 sys.exit(0)
             else:
-                print("Prosze podać poprawno komende")
+                print("Prosze podać poprawną komende")
